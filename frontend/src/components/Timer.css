@@ -1,0 +1,132 @@
+/* Compact Timer Component for Header */
+
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.timer-circle {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-circle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+            #4CAF50 0deg,
+            #FFC107 180deg,
+            #F44336 360deg);
+    animation: rotate-gradient 10s linear infinite;
+    opacity: 0.2;
+}
+
+@keyframes rotate-gradient {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.timer-circle::after {
+    content: '';
+    position: absolute;
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    background: white;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.timer-display {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #333;
+    position: relative;
+    z-index: 1;
+    animation: pulse-timer 1s ease-in-out infinite;
+}
+
+@keyframes pulse-timer {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.timer-display.warning {
+    color: #FF9800;
+    animation: pulse-warning 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.timer-display.danger {
+    color: #F44336;
+    animation: pulse-danger 0.3s ease-in-out infinite;
+}
+
+@keyframes pulse-danger {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(-2deg);
+    }
+
+    50% {
+        transform: scale(1.15) rotate(2deg);
+    }
+}
+
+.timer-label {
+    margin-top: 5px;
+    font-size: 0.65rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* Mobile Optimization */
+@media (max-width: 480px) {
+    .timer-circle {
+        width: 60px;
+        height: 60px;
+    }
+
+    .timer-display {
+        font-size: 1.5rem;
+    }
+
+    .timer-label {
+        font-size: 0.6rem;
+    }
+}
