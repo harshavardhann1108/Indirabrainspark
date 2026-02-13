@@ -17,10 +17,7 @@ def get_questions(db: Session = Depends(get_db)):
     questions = crud.get_all_questions(db)
     
     if not questions:
-        raise HTTPException(
-            status_code=404,
-            detail="No questions found. Please seed the database first."
-        )
+        return schemas.QuestionsListResponse(questions=[])
     
     questions_response = []
     for q in questions:
