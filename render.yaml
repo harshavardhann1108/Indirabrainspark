@@ -1,26 +1,26 @@
 services:
-  # 1. Backend Service (FastAPI)
+  # 1. Backend Service (FastAPI) - Free Tier
   - type: web
-    name: iu-quiz-backend
+    name: iu-quiz-backend-free
     env: python
     region: singapore
-    plan: standard # Recommended for 1000 users (approx $25/mo)
+    plan: free # Limits: Spins down after 15 mins inactivity, slower CPU
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 4
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT # Workers default (1) for free tier to save RAM
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: iu-quiz-db
+          name: iu-quiz-db-free
           property: connectionString
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: CORS_ORIGINS
-        value: "*" # We will lock this down to the frontend URL later if needed, or use a sync placeholder
+        value: "*"
 
-  # 2. Frontend Service (React + Vite)
+  # 2. Frontend Service (React + Vite) - Free
   - type: static
-    name: iu-quiz-frontend
+    name: iu-quiz-frontend-free
     env: static
     region: singapore
     rootDir: frontend
@@ -30,14 +30,14 @@ services:
       - key: VITE_API_URL
         fromService:
           type: web
-          name: iu-quiz-backend
+          name: iu-quiz-backend-free
           property: url
 
 databases:
-  # 3. PostgreSQL Database
-  - name: iu-quiz-db
+  # 3. PostgreSQL Database - Free Tier
+  - name: iu-quiz-db-free
     region: singapore
-    plan: standard # Recommended for performance ($25/mo), 'free' is not viable for 1000 users
+    plan: free # Limits: 1GB storage, expires in 90 days, no backups
     databaseName: indira_brainstorm
     user: indira_user
 
