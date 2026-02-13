@@ -130,37 +130,6 @@ function Welcome() {
 
                 <div className="footer-text">
                     <p>Powered by Indira University</p>
-                    <button
-                        onClick={() => navigate('/admin')}
-                        style={{
-                            marginTop: '1rem',
-                            background: 'transparent',
-                            border: '1px solid rgba(255,255,255,0.3)',
-                            color: 'rgba(255,255,255,0.7)',
-                            padding: '0.5rem 1rem',
-                            borderRadius: '20px',
-                            fontSize: '0.8rem',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        Admin Login
-                    </button>
-                    <button
-                        onClick={() => navigate('/test')}
-                        style={{
-                            marginTop: '1rem',
-                            marginLeft: '1rem',
-                            background: 'transparent',
-                            border: '1px solid rgba(255,255,255,0.3)',
-                            color: 'rgba(255,255,255,0.7)',
-                            padding: '0.5rem 1rem',
-                            borderRadius: '20px',
-                            fontSize: '0.8rem',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        Test Page
-                    </button>
                 </div>
             </div>
         </div>
