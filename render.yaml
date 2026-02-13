@@ -18,15 +18,13 @@ services:
       - key: CORS_ORIGINS
         value: "*"
 
-staticSites:
   # 2. Frontend Service (React + Vite) - Free
-  - name: iu-quiz-frontend-free
-    env: static # Usually implied for staticSites, but good to keep or remove if strictly not needed. 'static' is redundant here but often ignored. 
-    # Actually for staticSites, 'type' is not needed. 'env' is sometimes not needed but harmless.
+  - type: static_site
+    name: iu-quiz-frontend-free
     region: singapore
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
         fromService:
