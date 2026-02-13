@@ -33,8 +33,8 @@ function Welcome() {
                 </div>
             </nav>
 
-            {/* PixelBlast Animated Background */}
-            <div className="pixel-blast-background">
+            {/* PixelBlast Animated Background - Commented out for debugging */}
+            {/* <div className="pixel-blast-background">
                 <PixelBlast
                     variant="square"
                     pixelSize={4}
@@ -54,7 +54,7 @@ function Welcome() {
                     edgeFade={0.25}
                     transparent
                 />
-            </div>
+            </div> */}
 
             {/* Animated particle background */}
             <div className="particles-bg">
