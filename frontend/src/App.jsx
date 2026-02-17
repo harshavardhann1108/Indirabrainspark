@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Prizes from './components/Prizes';
 import Welcome from './components/Welcome';
 import RegistrationForm from './components/RegistrationForm';
 import Quiz from './components/Quiz';
@@ -13,7 +14,8 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Welcome />} />
+          <Route path="/" element={<Prizes />} />
+          <Route path="/welcome" element={<Welcome />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/thank-you" element={<ThankYou />} />
