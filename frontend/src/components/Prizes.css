@@ -46,6 +46,8 @@
     height: 50px;
     width: auto;
     border-radius: 8px;
+    background: white;
+    padding: 5px;
 }
 
 /* Animated gradient orbs */
