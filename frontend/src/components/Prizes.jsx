@@ -19,15 +19,18 @@ function Prizes() {
                 </div>
             </nav>
 
-            {/* Animated gradient orbs */}
-            <div className="orb orb-1"></div>
-            <div className="orb orb-2"></div>
-            <div className="orb orb-3"></div>
-
             <div className="prizes-content">
                 {/* Prizes Image Section */}
                 <div className="prizes-image-section">
-                    <img src={prizesImage} alt="Indira BrainSpark Quiz Prizes" className="prizes-image" />
+                    <img
+                        src={prizesImage}
+                        alt="Indira BrainSpark Quiz Prizes"
+                        className="prizes-image"
+                        loading="lazy"
+                        decoding="async"
+                        width="900"
+                        height="600"
+                    />
                 </div>
 
                 {/* Register Button */}

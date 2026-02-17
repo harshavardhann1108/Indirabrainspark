@@ -5,6 +5,10 @@
     position: relative;
     overflow-x: hidden;
     padding-bottom: 2rem;
+    /* Critical performance optimizations */
+    scroll-behavior: auto !important;
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
 }
 
 /* Navigation Bar */
@@ -13,39 +17,42 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 80px;
-    background: rgba(10, 10, 26, 0.8);
-    backdrop-filter: blur(10px);
+    height: 100px;
+    background: rgba(10, 10, 26, 0.95);
     border-bottom: 1px solid rgba(177, 158, 239, 0.2);
     display: flex;
     align-items: center;
     padding: 0 2rem;
     z-index: 1000;
+    will-change: transform;
 }
 
-.navbar-logo-container {
+.prizes-navbar .navbar-logo-container {
     display: flex;
     align-items: center;
+    padding: 8px 16px;
+    margin: 10px 0;
+    background: rgba(177, 158, 239, 0.25) !important;
+    border-radius: 16px;
+    border: 3px solid rgba(177, 158, 239, 0.9) !important;
+    backdrop-filter: blur(15px) !important;
+    box-shadow: 0 0 40px rgba(177, 158, 239, 1),
+        0 0 80px rgba(177, 158, 239, 0.7),
+        0 0 120px rgba(177, 158, 239, 0.5),
+        inset 0 0 30px rgba(177, 158, 239, 0.3) !important;
 }
 
-.navbar-logo {
-    height: 60px;
+.prizes-navbar .navbar-logo {
+    height: 50px;
     width: auto;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(177, 158, 239, 0.3);
-    transition: transform 0.3s ease;
-}
-
-.navbar-logo:hover {
-    transform: scale(1.05);
 }
 
 /* Animated gradient orbs */
 .orb {
     position: fixed;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.3;
+    opacity: 0.15;
     pointer-events: none;
     z-index: 0;
 }
@@ -56,7 +63,6 @@
     background: radial-gradient(circle, #B19EEF 0%, transparent 70%);
     top: -100px;
     right: -100px;
-    animation: float 20s ease-in-out infinite;
 }
 
 .orb-2 {
@@ -65,7 +71,6 @@
     background: radial-gradient(circle, #7B68EE 0%, transparent 70%);
     bottom: -50px;
     left: -50px;
-    animation: float 15s ease-in-out infinite reverse;
 }
 
 .orb-3 {
@@ -75,7 +80,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    animation: float 18s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -100,7 +104,9 @@
     z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 100px 2rem 2rem;
+    padding: 120px 2rem 2rem;
+    /* Performance optimization */
+    contain: layout style;
 }
 
 /* Prizes Image Section */
@@ -108,7 +114,7 @@
     margin-bottom: 3rem;
     display: flex;
     justify-content: center;
-    animation: fadeInUp 0.8s ease-out;
+    contain: layout style paint;
 }
 
 .prizes-image {
@@ -118,13 +124,13 @@
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(177, 158, 239, 0.4);
     border: 2px solid rgba(177, 158, 239, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Performance optimizations */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    content-visibility: auto;
 }
 
-.prizes-image:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 70px rgba(177, 158, 239, 0.6);
-}
+
 
 /* Register Button */
 .register-button {
@@ -138,11 +144,10 @@
     border-radius: 50px;
     cursor: pointer;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 10px 30px rgba(177, 158, 239, 0.4);
     display: block;
     margin: 0 auto 3rem;
-    animation: fadeInUp 1s ease-out 0.2s both;
 }
 
 .register-button:hover {
@@ -187,13 +192,11 @@
 
 /* Terms and Conditions Section */
 .terms-section {
-    background: rgba(177, 158, 239, 0.05);
+    background: rgba(177, 158, 239, 0.08);
     border: 1px solid rgba(177, 158, 239, 0.2);
     border-radius: 20px;
     padding: 2.5rem;
     margin-bottom: 2rem;
-    backdrop-filter: blur(10px);
-    animation: fadeInUp 1.2s ease-out 0.4s both;
 }
 
 .terms-title {
@@ -234,7 +237,6 @@
     margin-top: 2rem;
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.9rem;
-    animation: fadeInUp 1.4s ease-out 0.6s both;
 }
 
 /* Animations */
@@ -253,12 +255,17 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .prizes-content {
-        padding: 90px 1rem 1rem;
+        padding: 110px 1rem 1rem;
     }
 
     .prizes-navbar {
         padding: 0 1rem;
-        height: 70px;
+        height: 90px;
+        justify-content: center;
+    }
+
+    .prizes-navbar .navbar-logo-container {
+        margin: 10px 0;
     }
 
     .navbar-logo {
@@ -287,9 +294,7 @@
         font-size: 0.9rem;
     }
 
-    .orb {
-        filter: blur(60px);
-    }
+
 }
 
 @media (max-width: 480px) {
