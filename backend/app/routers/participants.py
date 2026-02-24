@@ -23,6 +23,15 @@ def register_participant(participant: schemas.ParticipantCreate, db: Session = D
             detail="Email already registered. Please use a different email address."
         )
     
+    # Check if application number already exists
+    if participant.application_number:
+        existing_app_no = crud.get_participant_by_application_number(db, participant.application_number)
+        if existing_app_no:
+            raise HTTPException(
+                status_code=400,
+                detail="Application ID already registered. Please use a different Application ID."
+            )
+    
     try:
         db_participant = crud.create_participant(db, participant)
         return schemas.ParticipantResponse(

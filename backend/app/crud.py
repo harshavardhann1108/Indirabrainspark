@@ -21,6 +21,10 @@ def get_participant_by_email(db: Session, email: str):
     """Get participant by email"""
     return db.query(models.Participant).filter(models.Participant.email == email).first()
 
+def get_participant_by_application_number(db: Session, application_number: str):
+    """Get participant by application number"""
+    return db.query(models.Participant).filter(models.Participant.application_number == application_number).first()
+
 def get_all_questions(db: Session):
     """Get all questions ordered by question_number"""
     return db.query(models.Question).order_by(models.Question.question_number).all()
