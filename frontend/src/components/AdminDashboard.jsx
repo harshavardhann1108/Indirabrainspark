@@ -96,7 +96,7 @@ function AdminDashboard() {
             doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
 
             // Define table columns
-            const tableColumn = ["Rank", "Name", "Email", "School/College", "Marks", "Score %", "Avg Time (s)"];
+            const tableColumn = ["Rank", "Name", "App No.", "Email", "School/College", "Marks", "Score %", "Total Time (s)"];
 
             if (!participantsData || participantsData.length === 0) {
                 alert("No participant data to export.");
@@ -107,11 +107,12 @@ function AdminDashboard() {
             const tableRows = participantsData.map(participant => [
                 participant.rank || '-',
                 participant.full_name || 'Anonymous',
+                participant.application_number || '-',
                 participant.email || '-',
                 participant.school_college || '-',
-                `${participant.total_marks || 0}/${participant.total_questions || 0}`,
+                `${participant.total_marks || 0}/10`,
                 `${participant.percentage || 0}%`,
-                participant.avg_time || '0.00'
+                `${participant.total_time || 0}s`
             ]);
 
             console.log("Generating table with rows:", tableRows.length);
@@ -173,8 +174,9 @@ function AdminDashboard() {
                                     <tr>
                                         <th>Rank</th>
                                         <th>Name</th>
+                                        <th>App No.</th>
                                         <th>Marks</th>
-                                        <th>Time (s)</th>
+                                        <th>Total Time</th>
                                         <th>School/College</th>
                                     </tr>
                                 </thead>
@@ -185,8 +187,9 @@ function AdminDashboard() {
                                                 {topper.rank === 1 ? '🥇' : topper.rank === 2 ? '🥈' : topper.rank === 3 ? '🥉' : topper.rank}
                                             </td>
                                             <td>{topper.full_name}</td>
-                                            <td className="marks-cell">{topper.total_marks}</td>
-                                            <td>{topper.total_time}</td>
+                                            <td>{topper.application_number || '-'}</td>
+                                            <td className="marks-cell">{topper.total_marks}/10</td>
+                                            <td>{topper.total_time}s</td>
                                             <td>{topper.school_college}</td>
                                         </tr>
                                     ))}
@@ -244,7 +247,7 @@ function AdminDashboard() {
                                         <th>Name</th>
                                         <th>Percentage</th>
                                         <th>Marks</th>
-                                        <th>Avg Time</th>
+                                        <th>Total Time</th>
                                         <th>Contact</th>
                                     </tr>
                                 </thead>
@@ -266,8 +269,8 @@ function AdminDashboard() {
                                                     <span>{p.percentage}%</span>
                                                 </div>
                                             </td>
-                                            <td>{p.total_marks}/{p.total_questions}</td>
-                                            <td>{p.avg_time}s</td>
+                                            <td>{p.total_marks}/10</td>
+                                            <td>{p.total_time}s</td>
                                             <td>{p.contact_number}</td>
                                         </tr>
                                     ))}

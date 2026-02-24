@@ -7,6 +7,7 @@ class ParticipantCreate(BaseModel):
     contact_number: str = Field(..., pattern=r'^\d{10}$')
     email: EmailStr
     school_college: str = Field(..., min_length=1, max_length=255)
+    application_number: str = Field(..., min_length=1, max_length=255)
 
 class ParticipantResponse(BaseModel):
     participant_id: int
@@ -35,6 +36,7 @@ class QuizAnswerSubmit(BaseModel):
 
 class QuizSubmit(BaseModel):
     participant_id: int
+    total_time: int = Field(0, description="Exact overall time taken in seconds")
     responses: List[QuizAnswerSubmit]
 
 class QuizSubmitResponse(BaseModel):
@@ -88,6 +90,7 @@ class TopperEntry(BaseModel):
     full_name: str
     email: str
     school_college: str
+    application_number: Optional[str] = None
     total_marks: int
     total_time: float  # Sum of all response times in seconds
     avg_time: float  # Average time per question
@@ -113,10 +116,11 @@ class ParticipantScoreEntry(BaseModel):
     email: str
     school_college: str
     contact_number: str
+    application_number: Optional[str] = None
     total_marks: int
     total_questions: int
     percentage: float
-    avg_time: float
+    total_time: float
     
     class Config:
         from_attributes = True

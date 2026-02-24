@@ -44,6 +44,7 @@ def submit_quiz(quiz_data: schemas.QuizSubmit, db: Session = Depends(get_db)):
     - Accepts participant_id and array of responses
     - Calculates correctness for each answer
     - Stores all responses in database
+    - Automatically refreshes leaderboard
     - Returns total score
     """
     # Verify participant exists
@@ -92,6 +93,30 @@ def submit_quiz(quiz_data: schemas.QuizSubmit, db: Session = Depends(get_db)):
             # Continue even if one response fails
             print(f"Error saving response for question {response.question_number}: {e}")
             continue
+    
+    # Update or create leaderboard entry with the exact total_time_taken
+    try:
+        leaderboard_entry = db.query(models.Leaderboard).filter(
+            models.Leaderboard.participant_id == quiz_data.participant_id
+        ).first()
+        if leaderboard_entry:
+            leaderboard_entry.total_time = quiz_data.total_time
+        else:
+            new_entry = models.Leaderboard(
+                participant_id=quiz_data.participant_id,
+                total_time=quiz_data.total_time
+            )
+            db.add(new_entry)
+        db.commit()
+    except Exception as e:
+        print(f"Error setting total_time on leaderboard: {e}")
+
+    # Automatically refresh leaderboard after quiz submission
+    try:
+        crud.refresh_leaderboard(db)
+    except Exception as e:
+        # Log error but don't fail the submission
+        print(f"Error refreshing leaderboard: {e}")
     
     return schemas.QuizSubmitResponse(
         message="Quiz submitted successfully",

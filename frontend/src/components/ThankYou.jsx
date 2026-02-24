@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PixelBlast from './PixelBlast';
+import { safeSessionStorage } from '../utils/storage';
 import './ThankYou.css';
 
 function ThankYou() {
     const navigate = useNavigate();
-    const participantName = sessionStorage.getItem('participantName');
-    const score = sessionStorage.getItem('quizScore');
-    const totalQuestions = sessionStorage.getItem('totalQuestions');
+    const participantName = safeSessionStorage.getItem('participantName');
+    const score = safeSessionStorage.getItem('quizScore');
+    const totalQuestions = safeSessionStorage.getItem('totalQuestions');
     const [particles, setParticles] = useState([]);
 
     useEffect(() => {

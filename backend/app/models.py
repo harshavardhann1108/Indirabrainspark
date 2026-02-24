@@ -10,6 +10,7 @@ class Participant(Base):
     contact_number = Column(String(15), nullable=False)
     email = Column(String(255), nullable=False, unique=True, index=True)
     school_college = Column(String(255), nullable=False)
+    application_number = Column(String(255), nullable=True, default='')
     created_at = Column(TIMESTAMP, server_default=func.now())
 
 class Question(Base):

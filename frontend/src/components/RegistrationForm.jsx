@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerParticipant } from '../services/api';
+import { safeSessionStorage } from '../utils/storage';
 import './RegistrationForm.css';
 
 function RegistrationForm() {
@@ -9,7 +10,8 @@ function RegistrationForm() {
         full_name: '',
         contact_number: '',
         email: '',
-        school_college: ''
+        school_college: '',
+        application_number: ''
     });
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +27,8 @@ function RegistrationForm() {
                 return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Please enter a valid email address' : '';
             case 'school_college':
                 return value.trim() === '' ? 'School/College name is required' : '';
+            case 'application_number':
+                return value.trim() === '' ? 'Application number is required' : '';
             default:
                 return '';
         }
@@ -70,10 +74,10 @@ function RegistrationForm() {
             console.log('Registration successful:', response);
             console.log('Participant ID:', response.participant_id);
 
-            // Store participant data in sessionStorage
-            sessionStorage.setItem('participantId', response.participant_id);
-            sessionStorage.setItem('participantName', formData.full_name);
-            console.log('SessionStorage updated');
+            // Store participant data safely
+            safeSessionStorage.setItem('participantId', response.participant_id);
+            safeSessionStorage.setItem('participantName', formData.full_name);
+            console.log('Storage updated safely');
             console.log('Navigating to /quiz...');
 
             // Navigate to quiz
@@ -164,6 +168,20 @@ function RegistrationForm() {
                             placeholder="Enter your school or college name"
                         />
                         {errors.school_college && <span className="error-message">{errors.school_college}</span>}
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="application_number">Application Number *</label>
+                        <input
+                            type="text"
+                            id="application_number"
+                            name="application_number"
+                            value={formData.application_number}
+                            onChange={handleChange}
+                            className={errors.application_number ? 'error' : ''}
+                            placeholder="Enter your application number"
+                        />
+                        {errors.application_number && <span className="error-message">{errors.application_number}</span>}
                     </div>
 
                     {apiError && (

@@ -1,0 +1,116 @@
+{
+  "leaderboard": [
+    {
+      "id": 64,
+      "participant_id": 64,
+      "total_questions": 10,
+      "total_marks": 1,
+      "total_time": 83,
+      "avg_time": 8,
+      "rank_by_marks": 1,
+      "rank_by_time": 1,
+      "rank_combined": 1,
+      "updated_at": "2026-02-24T00:56:18.640823",
+      "combined_score": -2.3
+    }
+  ],
+  "participants": [
+    {
+      "id": 64,
+      "full_name": "Harshavardhan Patil",
+      "application_number": "CBIN0280652"
+    }
+  ],
+  "quiz_responses": [
+    {
+      "id": 483,
+      "participant_id": 64,
+      "question_number": 1,
+      "selected_answer": "C",
+      "time_taken": 10,
+      "is_correct": true,
+      "created_at": "2026-02-24T00:56:18.530086"
+    },
+    {
+      "id": 484,
+      "participant_id": 64,
+      "question_number": 2,
+      "selected_answer": "D",
+      "time_taken": 10,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.557394"
+    },
+    {
+      "id": 485,
+      "participant_id": 64,
+      "question_number": 3,
+      "selected_answer": "D",
+      "time_taken": 10,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.565481"
+    },
+    {
+      "id": 486,
+      "participant_id": 64,
+      "question_number": 4,
+      "selected_answer": "D",
+      "time_taken": 10,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.572797"
+    },
+    {
+      "id": 487,
+      "participant_id": 64,
+      "question_number": 5,
+      "selected_answer": "D",
+      "time_taken": 10,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.578745"
+    },
+    {
+      "id": 488,
+      "participant_id": 64,
+      "question_number": 6,
+      "selected_answer": "D",
+      "time_taken": 9,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.585693"
+    },
+    {
+      "id": 489,
+      "participant_id": 64,
+      "question_number": 7,
+      "selected_answer": "D",
+      "time_taken": 8,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.591478"
+    },
+    {
+      "id": 490,
+      "participant_id": 64,
+      "question_number": 8,
+      "selected_answer": null,
+      "time_taken": 10,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.596866"
+    },
+    {
+      "id": 491,
+      "participant_id": 64,
+      "question_number": 9,
+      "selected_answer": "D",
+      "time_taken": 4,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.602985"
+    },
+    {
+      "id": 492,
+      "participant_id": 64,
+      "question_number": 10,
+      "selected_answer": "D",
+      "time_taken": 2,
+      "is_correct": false,
+      "created_at": "2026-02-24T00:56:18.608566"
+    }
+  ]
+}

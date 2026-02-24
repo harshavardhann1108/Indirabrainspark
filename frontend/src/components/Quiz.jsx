@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getQuestions, submitQuiz } from '../services/api';
 import QuestionCard from './QuestionCard';
 import Timer from './Timer';
+import { safeSessionStorage } from '../utils/storage';
 import './Quiz.css';
 
 function Quiz() {
@@ -15,12 +16,13 @@ function Quiz() {
     const [questionTimeLeft, setQuestionTimeLeft] = useState(10); // 10 seconds per question
     const [isLoading, setIsLoading] = useState(true);
     const [questionStartTimes, setQuestionStartTimes] = useState({});
+    const [quizStartTime, setQuizStartTime] = useState(null);
 
     // Fetch questions on component mount
     useEffect(() => {
         console.log('=== QUIZ COMPONENT MOUNTED ===');
-        const participantId = sessionStorage.getItem('participantId');
-        console.log('Participant ID from sessionStorage:', participantId);
+        const participantId = safeSessionStorage.getItem('participantId');
+        console.log('Participant ID from storage:', participantId);
 
         if (!participantId) {
             console.log('No participant ID found, redirecting to /register');
@@ -38,6 +40,7 @@ function Quiz() {
                 setQuestions(data.questions);
                 setQuestionStatuses(new Array(data.questions.length).fill('not-visited'));
                 setQuestionStartTimes({});
+                setQuizStartTime(Date.now()); // Record exact start time
                 setIsLoading(false);
                 console.log('Quiz initialized successfully');
             } catch (error) {
@@ -55,15 +58,15 @@ function Quiz() {
 
     // Define handleSubmitQuiz first (needed by handleTimeExpired)
     const handleSubmitQuiz = useCallback(async () => {
-        const participantId = sessionStorage.getItem('participantId');
+        const participantId = safeSessionStorage.getItem('participantId');
         console.log('Submitting quiz for participant:', participantId);
 
         // Build responses array
         const responses = questions.map((question, index) => {
             const answer = answers[index];
-            const timeTaken = answer?.start_time
-                ? Math.min(Math.floor((Date.now() - answer.start_time) / 1000), 10)
-                : 10;
+            const timeTaken = answer?.time_taken !== undefined
+                ? answer.time_taken
+                : 10; // Default to 10 if not answered
 
             return {
                 question_number: question.question_number,
@@ -72,15 +75,22 @@ function Quiz() {
             };
         });
 
+        const totalTimeTaken = quizStartTime
+            ? Math.floor((Date.now() - quizStartTime) / 1000)
+            : 0;
+
+        console.log('Submitting total time:', totalTimeTaken);
+
         try {
             const response = await submitQuiz({
                 participant_id: parseInt(participantId),
+                total_time: totalTimeTaken,
                 responses: responses
             });
 
             console.log('Quiz submitted successfully:', response);
-            sessionStorage.setItem('quizScore', response.score);
-            sessionStorage.setItem('totalQuestions', response.total_questions);
+            safeSessionStorage.setItem('quizScore', response.score);
+            safeSessionStorage.setItem('totalQuestions', response.total_questions);
             navigate('/thank-you');
         } catch (error) {
             console.error('Error submitting quiz:', error);
@@ -173,12 +183,18 @@ function Quiz() {
 
         const questionNum = questions[currentQuestionIndex].question_number;
 
+        // Calculate the exact time taken for this question when answered
+        const startTime = questionStartTimes[currentQuestionIndex];
+        const calculatedTimeTaken = startTime
+            ? Math.min(Math.floor((Date.now() - startTime) / 1000), 10)
+            : 0;
+
         setAnswers(prev => ({
             ...prev,
             [currentQuestionIndex]: {
                 question_number: questionNum,
                 selected_answer: answer,
-                start_time: questionStartTimes[currentQuestionIndex]
+                time_taken: calculatedTimeTaken
             }
         }));
 

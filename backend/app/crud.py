@@ -9,7 +9,8 @@ def create_participant(db: Session, participant: schemas.ParticipantCreate):
         full_name=participant.full_name,
         contact_number=participant.contact_number,
         email=participant.email,
-        school_college=participant.school_college
+        school_college=participant.school_college,
+        application_number=participant.application_number
     )
     db.add(db_participant)
     db.commit()
@@ -59,6 +60,7 @@ def get_all_participant_statistics(db: Session):
         models.Participant.full_name,
         models.Participant.email,
         models.Participant.school_college,
+        models.Participant.application_number,
         func.count(models.QuizResponse.id).label('total_questions'),
         func.sum(models.QuizResponse.is_correct.cast(Integer)).label('total_marks'),
         func.avg(models.QuizResponse.time_taken).label('avg_time')
@@ -69,7 +71,8 @@ def get_all_participant_statistics(db: Session):
         models.Participant.id,
         models.Participant.full_name,
         models.Participant.email,
-        models.Participant.school_college
+        models.Participant.school_college,
+        models.Participant.application_number
     ).all()
     
     return results
@@ -136,11 +139,13 @@ def refresh_leaderboard(db: Session):
         models.Participant.id,
         func.count(models.QuizResponse.id).label('total_questions'),
         func.sum(case((models.QuizResponse.is_correct == True, 1), else_=0)).label('total_marks'),
-        func.sum(models.QuizResponse.time_taken).label('total_time'),
-        func.avg(models.QuizResponse.time_taken).label('avg_time')
+        func.max(models.Leaderboard.total_time).label('total_time')  # Get the fixed total_time from leaderboard
     ).outerjoin(
         models.QuizResponse,
         models.Participant.id == models.QuizResponse.participant_id
+    ).outerjoin(
+        models.Leaderboard,
+        models.Participant.id == models.Leaderboard.participant_id
     ).group_by(models.Participant.id).all()
     
     # Update or create leaderboard entries
@@ -159,8 +164,8 @@ def refresh_leaderboard(db: Session):
                 participant_id=stat.id,
                 total_questions=stat.total_questions or 0,
                 total_marks=stat.total_marks or 0,
-                total_time=int(stat.total_time or 0),
-                avg_time=int(stat.avg_time or 0)
+                total_time=stat.total_time or 0,
+                avg_time=0
             )
             db.add(new_entry)
     
@@ -265,21 +270,26 @@ def get_all_participants_with_scores(db: Session):
         models.Participant.email,
         models.Participant.school_college,
         models.Participant.contact_number,
+        models.Participant.application_number,
         func.count(models.QuizResponse.id).label('total_questions'),
         func.sum(case((models.QuizResponse.is_correct == True, 1), else_=0)).label('total_marks'),
-        func.avg(models.QuizResponse.time_taken).label('avg_time')
+        func.max(models.Leaderboard.total_time).label('total_time')
     ).outerjoin(
         models.QuizResponse,
         models.Participant.id == models.QuizResponse.participant_id
+    ).outerjoin(
+        models.Leaderboard,
+        models.Participant.id == models.Leaderboard.participant_id
     ).group_by(
         models.Participant.id,
         models.Participant.full_name,
         models.Participant.email,
         models.Participant.school_college,
-        models.Participant.contact_number
+        models.Participant.contact_number,
+        models.Participant.application_number
     ).order_by(
         desc('total_marks'),
-        'avg_time'
+        'total_time'
     ).all()
     
     return results

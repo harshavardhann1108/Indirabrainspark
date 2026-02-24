@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { registerParticipant, getQuestions } from '../services/api';
+import { safeSessionStorage } from '../utils/storage';
 
 function TestPage() {
     const [testResults, setTestResults] = useState([]);
@@ -25,7 +26,7 @@ function TestPage() {
                 school_college: 'Test School'
             });
             addResult('Registration', 'PASS', `Participant ID: ${response.participant_id}`);
-            sessionStorage.setItem('participantId', response.participant_id);
+            safeSessionStorage.setItem('participantId', response.participant_id);
         } catch (error) {
             addResult('Registration', 'FAIL', error.message);
         }
@@ -39,7 +40,7 @@ function TestPage() {
         }
 
         // Test 4: Check sessionStorage
-        const participantId = sessionStorage.getItem('participantId');
+        const participantId = safeSessionStorage.getItem('participantId');
         addResult('SessionStorage', participantId ? 'PASS' : 'FAIL', `Participant ID: ${participantId || 'Not set'}`);
 
         setIsLoading(false);
@@ -76,7 +77,7 @@ function TestPage() {
                             marginBottom: '10px',
                             backgroundColor: 'white',
                             borderLeft: `4px solid ${result.status === 'PASS' ? '#4CAF50' :
-                                    result.status === 'FAIL' ? '#f44336' : '#2196F3'
+                                result.status === 'FAIL' ? '#f44336' : '#2196F3'
                                 }`,
                             borderRadius: '2px'
                         }}

@@ -85,6 +85,7 @@ def get_leaderboard(
                 full_name=participant.full_name,
                 email=participant.email,
                 school_college=participant.school_college,
+                application_number=participant.application_number,
                 total_marks=leaderboard.total_marks,
                 total_time=float(leaderboard.total_time),
                 avg_time=float(leaderboard.avg_time),
@@ -112,8 +113,9 @@ def get_participants_with_scores(db: Session = Depends(get_db)):
     
     participants = []
     for rank, result in enumerate(results, start=1):
-        # Calculate percentage
-        percentage = (result.total_marks / result.total_questions * 100) if result.total_questions > 0 else 0.0
+        # Calculate percentage strictly out of 10
+        total_m = result.total_marks or 0
+        percentage = (total_m / 10.0 * 100)
         
         participants.append(
             schemas.ParticipantScoreEntry(
@@ -123,10 +125,11 @@ def get_participants_with_scores(db: Session = Depends(get_db)):
                 email=result.email,
                 school_college=result.school_college,
                 contact_number=result.contact_number,
-                total_marks=result.total_marks or 0,
-                total_questions=result.total_questions or 0,
+                application_number=result.application_number,
+                total_marks=total_m,
+                total_questions=10,  # Strictly out of 10
                 percentage=round(percentage, 2),
-                avg_time=round(result.avg_time or 0.0, 2)
+                total_time=round(result.total_time or 0.0, 2)
             )
         )
     
